@@ -25,10 +25,11 @@ no hay tests, con `[WARN]` claros y exit 0 — nunca `[FAIL]` silenciosos). Si e
 reportá el bloqueo y pará.
 
 ### 2 — Chequeo de coherencia
-Confirmá: los archivos estándar del arnés están; la memoria en archivos existe (`progress/current.md`,
-`progress/history.md`, `progress/reports.md`); `feature_list.json` tiene ≤1 `in_progress` (idealmente 0)
-y al menos una feature `pending` con `"sdd": true`; lo viejo quedó en `archive/legacy/` con su INDEX; no
-quedó basura de la instalación.
+Confirmá: los archivos estándar del arnés están (incluidos los comandos `/` en `.claude/commands/` y la
+config en `.claude/settings.json`); la memoria en archivos existe (`progress/current.md`,
+`progress/history.md`, `progress/reports.md`, `progress/backlog.md`); `feature_list.json` tiene ≤1
+`in_progress` (idealmente 0) y al menos una feature `pending` con `"sdd": true`; lo viejo quedó en
+`archive/legacy/` con su INDEX; no quedó basura de la instalación.
 
 ### 3 — Limpieza del traspaso
 Marcá `[x] Etapa 3` en `HARNESS-INSTALL.md` y luego **borralo** (su contenido ya cumplió su función; lo
@@ -41,6 +42,11 @@ flujo SDD**:
 > Vos lanzás `spec_author`, que escribe los 3 specs y **para** en `spec_ready`. Yo leo
 > `specs/<feature>/` y respondo *"aprobado"* (o pido cambios). Recién ahí escribís `approved_by`/
 > `approved_at`, pasás a `in_progress`, y corrés `implementer` → `reviewer` hasta `done`.
+
+Para el día a día no hace falta recordar esta ceremonia: usá los **comandos `/`** (`/retomar`, `/idea`,
+`/nueva`, `/arreglar`, `/cerrar`…) que son tu rutina hecha botones, y leé **`guia-del-arnes.md`** para
+operarlo bien. Si querés que avance sin interrumpirte, corré en modo **hands-off** (`auto`); solo te
+frenará en lo de impacto real.
 
 Recordá: como todo son archivos del repo, en otra computadora basta `git pull` — el arnés viaja completo,
 sin nada que instalar. Con eso queda listo e idéntico al de cualquier otro proyecto. Fin de la
