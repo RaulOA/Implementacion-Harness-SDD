@@ -8,6 +8,15 @@
 > reviewer** con anti-teléfono (los subagentes escriben su resultado en archivos y devuelven solo una
 > referencia). **No avances de etapa sin la confirmación que se pide al final.**
 
+> **Frontera de decisiones (clasificá tus dudas antes de cualquier pausa).** Lo que el estándar ya
+> define —todo lo marcado 🔒 y la forma del esqueleto: ubicación y nombres de archivos/carpetas, los
+> cuatro roles, dónde van las specs (`specs/<feature>/`), los archivos de memoria, los hooks y los
+> comandos `/`— es **invariante**: lo aplicás y, si acaso, lo **informás** ("así lo apliqué"); **nunca
+> lo consultás**. Solo me consultás lo **propio de este proyecto** (🔎: stack y comandos reales, fuente
+> de los `R<n>`, qué módulos entran en alcance, inconsistencias o hallazgos del repo). Prueba rápida:
+> si una duda se resuelve mirando el estándar, no es pregunta —resolvela; si la respuesta cambiaría de
+> un proyecto a otro, esa sí me la pasás.
+
 ## Tu único trabajo en esta etapa
 
 **Investigar este repositorio y proponer un plan. NO crees el arnés todavía.** El único archivo que
@@ -50,6 +59,9 @@ con su clasificación y mapeo propuesto. Dejá una sección "Progreso de etapas"
 ## PAUSA — pará acá
 
 Mostrame en el chat un **resumen** de: (a) stack + 5 comandos + rutas; (b) el inventario clasificado y
-el mapeo; (c) cualquier ambigüedad o decisión que necesite mi criterio. Luego **pará y esperá mi OK**
+el mapeo; (c) **dos listas separadas** — lo que resolvés **por estándar** (me lo informás, no me lo
+preguntás: ubicación, set de roles, ubicación de specs, formato de los archivos del arnés, hooks,
+comandos) y lo que necesita **mi criterio por ser propio del proyecto** (esto sí me lo consultás).
+Luego **pará y esperá mi OK**
 (o mis correcciones). **No empieces la Etapa 1.** Si el repo está vacío o algo es ambiguo, preguntame
 en vez de inventar.

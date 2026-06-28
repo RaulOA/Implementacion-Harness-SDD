@@ -7,6 +7,15 @@
 > anti-teléfono. **No avances de etapa sin la confirmación del final.** Leé `HARNESS-INSTALL.md`: de
 > ahí salen el stack, los 5 comandos y las rutas 🔎.
 
+> **Frontera de decisiones (clasificá tus dudas antes de cualquier pausa).** Lo que el estándar ya
+> define —todo lo marcado 🔒 y la forma del esqueleto: ubicación y nombres de archivos/carpetas, los
+> cuatro roles, dónde van las specs (`specs/<feature>/`), los archivos de memoria, los hooks y los
+> comandos `/`— es **invariante**: lo aplicás y, si acaso, lo **informás** ("así lo apliqué"); **nunca
+> lo consultás**. Solo me consultás lo **propio de este proyecto** (🔎: stack y comandos reales, fuente
+> de los `R<n>`, qué módulos entran en alcance, inconsistencias o hallazgos del repo). Prueba rápida:
+> si una duda se resuelve mirando el estándar, no es pregunta —resolvela; si la respuesta cambiaría de
+> un proyecto a otro, esa sí me la pasás.
+
 ## Tu único trabajo en esta etapa
 
 Crear **todos los archivos estándar del arnés**. **NO migres ni quites nada de lo viejo todavía** (eso
@@ -159,5 +168,7 @@ usa `$ARGUMENTS` cuando lleva texto. Crealos todos:
 
 **Autoauditoría:** listame los archivos creados, confirmá que `init.ps1` referencia solo comandos del
 bloque de configuración (nada de un lenguaje ajeno) y que las rutas salen de `architecture.md`. Mostrame
-el borrador de la **sección de proyecto de la constitución** para mi visto bueno. Marcá `[x] Etapa 1` en
+el borrador de la **sección de proyecto de la constitución** para mi visto bueno. Si surgió alguna duda
+de **estructura**, resolvela por estándar y solo informámela; consultame únicamente lo propio del
+proyecto. Marcá `[x] Etapa 1` en
 `HARNESS-INSTALL.md`. **Pará y esperá mi OK. No empieces la Etapa 2.**

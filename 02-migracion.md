@@ -6,6 +6,15 @@
 > del final.** Leé `HARNESS-INSTALL.md`: ahí está el inventario clasificado de la Etapa 0. Los archivos
 > del arnés (Etapa 1) ya existen.
 
+> **Frontera de decisiones (clasificá tus dudas antes de cualquier pausa).** Lo que el estándar ya
+> define —todo lo marcado 🔒 y la forma del esqueleto: ubicación y nombres de archivos/carpetas, los
+> cuatro roles, dónde van las specs (`specs/<feature>/`), los archivos de memoria, los hooks y los
+> comandos `/`— es **invariante**: lo aplicás y, si acaso, lo **informás** ("así lo apliqué"); **nunca
+> lo consultás**. Solo me consultás lo **propio de este proyecto** (🔎: stack y comandos reales, fuente
+> de los `R<n>`, qué módulos entran en alcance, inconsistencias o hallazgos del repo). Prueba rápida:
+> si una duda se resuelve mirando el estándar, no es pregunta —resolvela; si la respuesta cambiaría de
+> un proyecto a otro, esa sí me la pasás.
+
 ## Tu único trabajo en esta etapa
 
 Trasladar lo viejo al arnés nuevo **sin perder nada**. Esta es la única etapa que **quita** archivos,
@@ -44,5 +53,7 @@ git.
 ## PAUSA — pará acá
 
 Confirmame: cuántos artefactos se aprovecharon y a qué archivos; cuántos quedaron en `archive/legacy/`
-(con su INDEX); y que el lugar activo quedó limpio. Demostrá que **nada se perdió**. Marcá `[x] Etapa 2`
+(con su INDEX); y que el lugar activo quedó limpio. Demostrá que **nada se perdió**. El **destino** de
+cada artefacto lo fija el estándar (no se consulta); pasame solo los casos donde el **contenido** es
+ambiguo sobre a qué archivo del arnés mapea. Marcá `[x] Etapa 2`
 en `HARNESS-INSTALL.md`. **Pará y esperá mi OK. No empieces la Etapa 3.**
