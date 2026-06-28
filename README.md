@@ -56,16 +56,12 @@ proyectos y en todas tus máquinas.
 │   ├── 02-migracion.md         ·  Etapa 2 — aprovechar/archivar lo viejo sin perder nada
 │   └── 03-verificacion.md      ·  Etapa 3 — verificar y dejar todo listo
 │
-├── guia-del-arnes.md           ← Guía pedagógica para el operador humano
-│
-└── (versiones previas)         ← La evolución del diseño, como referencia histórica
-    ├── prompt-...-v2.md         ·  Versión monolítica con base de datos (luego descartada)
-    └── prompt-....md            ·  Primera versión genérica en un solo prompt
+└── guia-del-arnes.md           ← Guía pedagógica para el operador humano
 ```
 
-> Lo que conviene usar es **`arnes-prompts/`** (la secuencia por etapas) junto con
-> **`guia-del-arnes.md`**. Las versiones previas se dejan a propósito: muestran cómo evolucionó el
-> diseño, incluyendo un experimento con base de datos que se reemplazó por archivos.
+> Usás la secuencia por etapas en **`arnes-prompts/`** junto con **`guia-del-arnes.md`**. (La evolución
+> del diseño —incluido un experimento con base de datos que se reemplazó por archivos— queda en el
+> historial de git.)
 
 ---
 
