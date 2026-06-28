@@ -40,7 +40,8 @@ proyecto. Creá exactamente esta lista y marcá cada uno al terminar.
   (1) toolchain disponible; (2) archivos base del arnés existen; (3) invariantes del tablero
   (`feature_list.json` parseable con `ConvertFrom-Json`, estados válidos, **≤1 `in_progress`**, **toda
   `in_progress` con `approved_by`/`approved_at`**, y specs presentes para features `sdd` no-`pending`);
-  (4) corre `Typecheck`/`Lint`/`Build`/`Test` no vacíos (lo caro al final); (5) resumen. Sin chequeos
+  (4) corre `Typecheck`/`Lint`/`Build`/`Test` no vacíos (lo caro al final); (5) avisa `[WARN]` si algún
+  archivo de `progress/` superó el umbral de retención (semáforo de rotación); (6) resumen. Sin chequeos
   de base de datos ni de red.
 
 ### `docs/`
@@ -79,6 +80,11 @@ proyecto. Creá exactamente esta lista y marcá cada uno al terminar.
   rendimiento). **Regla de enmienda**: cambiarla requiere acción humana + bump semver; el agente nunca
   la enmienda solo. *(Para la sección del proyecto, presentame el borrador y esperá mi visto bueno —
   es contrato.)*
+- [ ] `docs/workflow.md` 🔒 — el **modelo de trabajo diario** que el agente sigue: el principio
+  **capturar ≠ ejecutar**; el loop (retomar → capturar ideas → elegir UNA → ejecutar → cerrar →
+  planificar); el propósito de cada comando `/`; y las **reglas de retención/rotación** (umbral de
+  tamaño de `reports.md` antes de rotar a `archive/reports/`; specs `done` → `archive/specs/`;
+  `init.ps1` avisa si un archivo de `progress/` se pasa de tamaño sano). Los comandos referencian este doc.
 
 ### `.claude/agents/` — los cuatro subagentes 🔒 *contratos* / 🔎 *comandos y rutas*
 Markdown con frontmatter (`name`, `description`, `tools`, **`model`**); cuerpo = system prompt. Hablá de
@@ -113,6 +119,28 @@ lenguaje. **Ruteo de modelo:** Opus en leader y spec_author; Sonnet en implement
   corre `init.ps1` antes de cerrar y, si tu Claude Code lo soporta, **bloquea el cierre (exit ≠ 0)** en
   rojo. `permissions.allow` con los comandos del proyecto.
 
+### `.claude/commands/` 🔒 — modelo de trabajo diario (comandos `/`)
+Cada archivo `.claude/commands/<nombre>.md` es un prompt reutilizable que se invoca con `/<nombre>` y
+usa `$ARGUMENTS` cuando lleva texto. Crealos todos:
+- [ ] `/retomar` — re-orienta: lee `progress/current.md`, el tablero y las últimas entradas de
+  `history.md`; sintetiza en qué quedó el humano, qué hay en curso, qué sigue, y si `init.ps1` está
+  verde. **No trabaja**, solo pone al día.
+- [ ] `/idea` — captura `$ARGUMENTS` como **una línea con fecha** en `progress/backlog.md` y **sigue con
+  lo actual**. No abre tarea ni cambia el foco.
+- [ ] `/nueva` — trabajo nuevo (`$ARGUMENTS`): aplica la **compuerta de complejidad** (multi-archivo/
+  riesgoso/UI → SDD; trivial → directo); lo agrega al tablero y arranca el flujo correcto. Respeta
+  una-cosa-a-la-vez: si ya hay algo `in_progress`, pregunta si encola o cambia de foco.
+- [ ] `/arreglar` — corrección (`$ARGUMENTS`): averigua si es reciente o viejo; si la feature está
+  archivada, trae su nota desde `archive/` (el índice apunta dónde); reproduce, halla la causa, aplica
+  la compuerta de complejidad. Muestra **evidencia** de que quedó arreglado.
+- [ ] `/planificar` — procesa `progress/backlog.md` contra el cronograma: agrupa, marca qué promover a
+  `pending`, qué dejar como "algún día", qué descartar, y propone el orden. **No ejecuta**; el humano decide.
+- [ ] `/cerrar` — **ritual de cierre**: corre `init.ps1` (verde); destila lo terminado a una línea en
+  `history.md` y lo poda del tablero; archiva specs `done` a `archive/specs/`; **rota** `reports.md` a
+  `archive/reports/` si superó el umbral; deja `current.md` en estado real; reporta qué cerró.
+- [ ] `/estado` (opcional) — vistazo de una pantalla: qué `in_progress`, qué `pending`, cuántas ideas en
+  `backlog`, y si `init.ps1` está verde. Sin acción.
+
 ### `progress/` — la memoria del arnés (archivos consolidados, no un archivo por feature)
 - [ ] `progress/current.md` — plantilla del estado de la sesión activa (feature en curso, plan, notas,
   bloqueos). Se **sobrescribe** cada sesión.
@@ -120,9 +148,12 @@ lenguaje. **Ruteo de modelo:** Opus en leader y spec_author; Sonnet en implement
   corta por feature (qué, cuándo, `approved_by`, resumen de 1–2 líneas). Inicia con un encabezado.
 - [ ] `progress/reports.md` — informes **detallados append-only** de implementación/revisión (el lugar
   en disco del anti-teléfono). Inicia con un encabezado.
+- [ ] `progress/backlog.md` — captura **append-only** de ideas/pendientes sueltos (una línea con fecha
+  cada uno). Lo llena `/idea`, lo procesa `/planificar`. Inicia con un encabezado.
 
-> **Nota de tokens:** los agentes leen `history.md`/`reports.md` de forma **dirigida** (buscando la
-> feature o las últimas entradas), no enteros. Son podables si crecen mucho.
+> **Nota de tokens y retención:** los agentes leen `history.md`/`reports.md`/`backlog.md` de forma
+> **dirigida** (la feature o las últimas entradas), no enteros. El ritual `/cerrar` destila y archiva, y
+> `reports.md` **rota** a `archive/reports/` al pasar el umbral, así ningún archivo crece sin fin.
 
 ## PAUSA — pará acá
 
