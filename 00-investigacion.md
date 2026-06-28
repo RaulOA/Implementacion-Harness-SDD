@@ -47,6 +47,11 @@ Reglas: **no asumas que existe ningún artefacto en particular**; **no fuerces**
 **ausencia total es válida y normal**; prestá atención también a estructuras caseras o idiosincráticas
 que no se parezcan a ningún patrón conocido.
 
+**Solo buscás context-engineering, NO código.** El **código de dominio o de la app** —incluido SQL,
+scripts y migraciones, **aunque esté en carpetas `legacy`/`deprecated`/`_old`**— NO es artefacto del
+arnés: el arnés **nunca lo reubica**, se deja donde está. Si dudás si algo es context-engineering o
+código de dominio, **flagueálo al humano**; no lo marques archivable por las dudas.
+
 ### 3 — Clasificar y proponer mapeo 🔎
 Para cada cosa encontrada: **reutilizable** (qué archivo del arnés estándar la absorberá) o
 **histórico** (se preserva verbatim en `archive/legacy/`, no se reutiliza pero no se pierde).

@@ -30,6 +30,12 @@ archivo del arnés que le corresponde según el mapeo (convenciones → `docs/co
 memoria/progreso → `progress/history.md`). Integrá el contenido, no el archivo viejo; resolvé duplicados
 a favor de lo nuevo.
 
+**Specs/diseños viejos:** los de trabajo **ya `done`** se tratan como **histórico** — se archivan
+verbatim como registro (paso 2), **no se reconstruyen** al formato `specs/<feature>/{requirements,
+design,tasks}`. Ese formato es **solo hacia adelante**: reformatear trabajo terminado es make-work (y
+medio ficticio, porque sería reversear el spec desde el código ya escrito). Si alguna spec vieja **no**
+está `done` (sigue activa o planeada), esa sí traela al formato nuevo.
+
 ### 2 — Archivar TODO lo viejo (verbatim) en `archive/legacy/`
 Antes de quitar nada, **mové** cada artefacto viejo que vayas a sacar del lugar activo —reutilizable o
 histórico— a `archive/legacy/`, **conservando su ruta relativa original** y su contenido **intacto** (no
