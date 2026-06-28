@@ -2,6 +2,9 @@
 
 > Guardá este archivo en `docs/` de tu proyecto para tenerlo a mano (también viaja con el repo).
 > Es para **consultar**: leela entera una vez, y después volvé a la sección que necesités.
+>
+> Los comandos `/` que se muestran son del adaptador de **Claude Code**; la **disciplina** que enseña
+> (capturar ≠ ejecutar, revisar el spec, exigir evidencia) sirve con cualquier agente.
 
 ---
 

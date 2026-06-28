@@ -1,8 +1,8 @@
 # Arnés de Harness Engineering para programar con agentes de IA
 
-> Plantillas de instalación + una guía pedagógica para que un agente de IA (Claude Code) trabaje de
-> forma **autónoma, verificable y estandarizada** sobre **cualquier** proyecto web — y para que el
-> programador **no sea el eslabón débil**.
+> Un arnés **portable** (agnóstico de agente) para que una IA trabaje de forma **autónoma, verificable y
+> estandarizada** sobre **cualquier** proyecto web — y para que el programador **no sea el eslabón
+> débil**. Incluye el instalador de referencia para **Claude Code** y una guía pedagógica.
 
 Todo el material está en **español de Costa Rica**.
 
@@ -14,13 +14,16 @@ Un **arnés** (en inglés *harness*) no es una aplicación: es la **estructura d
 rodea al código** para que un agente de IA pueda trabajar solo, sin perderse y sin que tengás que
 confiar a ciegas en lo que produce.
 
-Este repositorio contiene dos cosas:
+El arnés en sí es **solo archivos y una disciplina**, así que lo lee cualquier agente —o incluso una
+persona—. Este repositorio contiene:
 
-1. **Una secuencia de prompts** que instala ese arnés sobre cualquier repositorio, sin importar el
-   lenguaje, el framework ni los patrones (detecta lo que hay y se adapta).
+1. **Una secuencia de prompts** que instala el arnés sobre cualquier repositorio, sin importar el
+   lenguaje, el framework ni los patrones (detecta lo que hay y se adapta). Es el **instalador para
+   Claude Code** — una de varias adaptaciones posibles.
 2. **Una guía** para el humano que va a operar el arnés en el día a día.
 
-Está pensado para usarse con **Claude Code**, pero las ideas aplican a cualquier agente de codificación.
+Está afinado para **Claude Code**, pero el núcleo es agnóstico de agente (ver "Cómo está organizado" más
+abajo para usarlo con otro).
 
 ---
 
@@ -78,6 +81,28 @@ Como todo queda en **archivos del repositorio**, al abrir el proyecto en otra co
 
 ---
 
+## Cómo está organizado: núcleo portable + adaptador
+
+El arnés tiene **dos capas**, y separarlas es lo que lo hace servir más allá de Claude:
+
+1. **El núcleo, agnóstico de agente.** La estructura (`specs/`, `progress/`, `archive/`, `docs/`,
+   `feature_list.json`), la compuerta de verificación (`init.*`), las puertas humanas, la trazabilidad
+   `R<n> → test`, y **`AGENTS.md` como fuente de verdad** (reglas, flujo SDD, roles y navegación). Son
+   solo archivos y una disciplina; los lee cualquier agente o modelo — o una persona.
+2. **El adaptador a Claude Code.** `CLAUDE.md` (un complemento fino que apunta a `AGENTS.md` + lo propio
+   de Claude Code), `.claude/agents/` y `.claude/commands/` (implementan los roles y los comandos),
+   `.claude/settings.json` (permisos, hooks, modelo), más los modos de permisos, `ultrathink` y el ruteo
+   Opus/Sonnet. Es lo que hace cómodo el núcleo *dentro de* Claude Code.
+
+**Para usarlo con otro agente** (Cursor, Aider, Codex, lo que venga): mantenés el núcleo igual y
+reescribís solo el adaptador — apuntás el archivo de instrucciones de ese agente a `AGENTS.md` y
+expresás los cuatro roles y la compuerta como ese agente los maneje. El núcleo no cambia. Por eso la
+regla de oro es **mantener `AGENTS.md` completo y autosuficiente**: que describa los roles y el flujo en
+concepto, no solo "corré tal subagente". Lo mismo con la config: los archivos como `settings.json` se
+**fusionan** (se agregan las claves del arnés sin borrar lo que ya tenías), no se sobrescriben.
+
+---
+
 ## Las ideas clave
 
 - **Entrada variable, salida estándar.** El agente *investiga* cada proyecto y luego moldea **el mismo
@@ -94,6 +119,8 @@ Como todo queda en **archivos del repositorio**, al abrir el proyecto en otra co
   una regla "anti-teléfono-descompuesto": cada uno deja su trabajo en disco, no en la conversación.
 - **El humano como pieza fuerte, no débil.** La guía entrena los pocos momentos donde el operador hace o
   rompe el proceso: pedir bien, revisar el spec, elegir el peso de cada tarea y exigir evidencia.
+- **Portable, no atado a Claude.** El núcleo (estructura, specs, verificación, `AGENTS.md`) sirve con
+  cualquier agente; lo específico de Claude Code es un adaptador que se puede reescribir.
 
 ---
 
@@ -114,6 +141,9 @@ diseño y decisiones con sus tira y afloja:
    para no acumular archivos) y una **guía pedagógica** para el operador humano.
 6. Se cerró un **agujero de diseño**: el prompt no le marcaba al agente la frontera entre "lo decide el
    estándar" y "lo decide el humano", y eso amenazaba la estandarización entre proyectos.
+7. Se **separó el núcleo agnóstico de agente del adaptador a Claude Code**, y se definió que los archivos
+   de configuración se **fusionan** en vez de sobrescribirse — para que el arnés sirva con cualquier
+   agente y no pise lo que el proyecto ya tenía.
 
 El resultado intenta capturar el consenso actual sobre cómo trabajar con agentes de codificación
 —specs, verificación, estado en disco, orquestación, puerta humana— en algo que cualquiera pueda tomar y

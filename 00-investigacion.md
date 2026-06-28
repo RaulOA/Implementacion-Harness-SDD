@@ -52,13 +52,26 @@ Para cada cosa encontrada: **reutilizable** (qué archivo del arnés estándar l
 **histórico** (se preserva verbatim en `archive/legacy/`, no se reutiliza pero no se pierde).
 
 Además, marcá aparte las **colisiones**: archivos que ya existen **en rutas que el estándar va a crear o
-sobrescribir** (p. ej. un `CLAUDE.md`, `.claude/settings.json`, `AGENTS.md` o algo en `docs/` previos).
-La Etapa 1 los va a reemplazar, así que hay que preservarlos antes; anotalos como tales en el traspaso.
+sobrescribir** (p. ej. un `CLAUDE.md`, `AGENTS.md`, `.claude/settings.json`, una config de MCP o algo en
+`docs/` previos). La Etapa 1 los va a tocar, así que hay que preservarlos antes; anotalos en el traspaso
+distinguiendo **dos tipos**: archivos de **configuración** (settings.json, MCP) — que se **fusionan**,
+conservando lo que el proyecto ya tenía (reglas propias, `env`, hooks, servidores MCP) — y archivos de
+**instrucción/prosa** (CLAUDE.md, AGENTS.md, docs) — que se reescriben destilando lo útil del original.
 
 ### 4 — Escribir el traspaso
 Creá `HARNESS-INSTALL.md` en la raíz con: stack + los 5 comandos + rutas de código/tests; el inventario
 con su clasificación y mapeo propuesto. Dejá una sección "Progreso de etapas" con casillas:
 `[ ] Etapa 0` … `[ ] Etapa 3`, y marcá la 0 al terminar.
+
+Incluí además la **configuración del chat que el proyecto necesita** (🔎, para que la Etapa 1 la deje
+fija de una vez y no haya que tocarla nunca más). La idea es **que fluya, frenando solo lo crítico**: qué
+comandos **permitir** (generoso — los de rutina: build, test, lint, lecturas de git, el toolchain — para
+no inundar de solicitudes), qué **negar** (lo prohibido: rutas de secretos/credenciales que encontraste
+—cadenas de conexión, `.env`, `appsettings` sensibles— y comandos destructivos), y qué dejar tras
+**preguntar** (solo lo de impacto real: escrituras por MCP a sistemas externos, deploys, operaciones
+destructivas sobre datos reales — nada menor); si el proyecto **realmente depende** de algún MCP server o
+plugin (nombralo; si no, ninguno); y el **idioma/tono** de trabajo. El *set* es estándar; los valores los
+derivás del proyecto.
 
 ## PAUSA — pará acá
 

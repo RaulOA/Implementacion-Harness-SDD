@@ -22,21 +22,36 @@ Crear **todos los archivos estándar del arnés**. **NO migres ni quites nada de
 es la Etapa 2). El contenido 🔎 sale de `HARNESS-INSTALL.md`; la estructura 🔒 es idéntica en todo
 proyecto. Creá exactamente esta lista y marcá cada uno al terminar.
 
-**Regla de colisión (preservación) 🔒.** Si un archivo del estándar va a crearse en una ruta donde **ya
-existe** uno (las "colisiones" que marcó la Etapa 0 — p. ej. `CLAUDE.md`, `.claude/settings.json` o algo
-en `docs/` previos), **copiá el original a `archive/legacy/` ANTES de sobrescribirlo**. La Etapa 1 no
-migra contenido (eso es Etapa 2); solo hace esta **copia defensiva**, porque es la única ventana para no
-perderlo: una vez sobrescrito, ya no estaría para que la Etapa 2 lo archive.
+**Regla de colisión (preservación) 🔒.** Si un archivo del estándar va a crearse donde **ya existe** uno
+(las "colisiones" que marcó la Etapa 0), **copiá el original a `archive/legacy/` ANTES de tocarlo**. Y
+según el tipo: los archivos de **configuración** (`.claude/settings.json`, config de MCP) se
+**fusionan** —agregás o actualizás las claves del arnés (modo, hooks, sus reglas, modelo) **sin borrar**
+lo que el proyecto ya tenía (`allow` propios, `env`, servidores MCP)—; los de **instrucción/prosa**
+(`CLAUDE.md`, `AGENTS.md`, docs) se reescriben destilando lo útil del original. La Etapa 1 no migra el
+resto del contexto viejo (eso es Etapa 2); esta copia + fusión es la única ventana para no perder lo que
+ya estaba.
 
 **(Opcional) Decisiones de estructura no obvias.** Cuando informes una (p. ej. por qué un hook recompila
 en vez de lintear), dejá el porqué en un **comentario del propio archivo** o una línea en
 `docs/architecture.md`, no solo en el chat — para que sobreviva como el resto del estado.
 
+**Nota de portabilidad 🔒 (el arnés NO es solo para Claude).** Tiene dos capas. La **universal**, que
+sirve con cualquier agente o modelo: la estructura (`specs/`, `progress/`, `docs/`, `feature_list.json`,
+`init.ps1`), **`AGENTS.md` como fuente de verdad** (reglas, flujo SDD, roles, navegación), las
+compuertas humanas y la trazabilidad. La **específica de Claude Code**, que otro agente adapta o
+ignora: `.claude/agents/` y `.claude/commands/` (implementan los roles y comandos), `.claude/
+settings.json` (permisos/hooks/modelo), `CLAUDE.md` (leader-forcing + tono), los modos de permisos,
+`ultrathink` y el ruteo Opus/Sonnet. Regla de oro: **mantené `AGENTS.md` completo y autosuficiente** —
+que describa los roles y el flujo en concepto, no solo "corré tal subagente"— para que el núcleo
+funcione aunque no se use Claude. `CLAUDE.md` complementa a `AGENTS.md`, no lo reemplaza.
+
 ### Raíz
 - [ ] `CLAUDE.md` — fuerza el rol **`leader`**: el modelo siempre orquesta y **nunca edita código de
   la app ni tests** directamente; para tareas de código lanza el subagente apropiado; **nunca marca
   `done` solo**; **nunca salta la puerta humana**. Excepción: lectura/exploración y cambios fuera de
-  código (docs, configuración, archivos de `progress/`) los hace el propio leader.
+  código (docs, configuración, archivos de `progress/`) los hace el propio leader. Incluí también el
+  **idioma/tono de trabajo** del proyecto (de la Etapa 0), para que responda siempre en ese registro sin
+  que se lo repitas — hace de "output style" sin configurar nada aparte.
 - [ ] `AGENTS.md` — mapa de navegación (divulgación progresiva): pasos al empezar (correr `init.ps1`,
   leer `progress/current.md` y el tablero), tabla "qué es cada cosa y cuándo leerla", reglas duras,
   flujo SDD, ritual de cierre.
@@ -122,7 +137,9 @@ lenguaje. **Ruteo de modelo:** Opus en leader y spec_author; Sonnet en implement
 - [ ] `spec_author.md` (`Read, Write, Edit, Glob, Grep, Bash` · `model: opus`) — redacta los 3 specs de
   una feature `pending` con `"sdd": true`: requirements EARS (cada `acceptance` cubierto por ≥1 `R<n>`),
   design (archivos, firmas, excepciones, **≥1 alternativa descartada**), tasks (checklist `[ ]`, cada
-  una cita sus `R<n>`). Marca `spec_ready` y **para**. Nunca toca código/tests. Salida: una línea
+  una cita sus `R<n>`). Marca `spec_ready` y **para**. Nunca toca código/tests. **Incluí `ultrathink` en
+  su prompt** — el spec es el punto de mayor palanca, así que conviene que razone hondo ahí
+  automáticamente, sin que toques el esfuerzo. Salida: una línea
   (`spec_ready -> specs/<name>/`).
 - [ ] `implementer.md` (`Read, Write, Edit, Glob, Grep, Bash` · `model: sonnet`) — implementa **una**
   feature `in_progress` según su spec. Anota su plan en `progress/current.md`. Cada `T<n>` en orden
@@ -136,12 +153,27 @@ lenguaje. **Ruteo de modelo:** Opus en leader y spec_author; Sonnet en implement
   solo brechas de correctitud o requisito; el estilo es opcional.** Anexa su veredicto a
   `progress/reports.md`. Salida: una línea (`APPROVED`/`CHANGES_REQUESTED -> progress/reports.md`).
 
-### `.claude/settings.json` 🔒 *forma* / 🔎 *comandos*
+### `.claude/settings.json` 🔒 *forma* / 🔎 *valores* — **config única, fija y que viaja con git**
 - [ ] Hooks que el arnés ejecuta (no el agente): `PostToolUse` matcher `Edit|Write` que corre lo
   **barato** (`Typecheck` o `Lint`, **no** la suite completa) y muestra solo el resumen; `Stop` que
   corre `init.ps1` antes de cerrar y, si tu Claude Code lo soporta, **bloquea el cierre (exit ≠ 0)** en
   rojo. Los scripts de hook en PowerShell también **fijan UTF-8 arriba** (evita mojibake).
-  `permissions.allow` con los comandos del proyecto.
+- [ ] `permissions` — la idea es **que fluya, frenando solo lo crítico**: `"defaultMode": "acceptEdits"`
+  de base; `allow` **generoso** con los comandos de rutina (build, test, lint, lecturas de git, el
+  toolchain) para que **NO pregunte por cada bash**; `deny` con lo **prohibido** (secretos/credenciales,
+  comandos destructivos); y `ask` **solo en lo de impacto real** (escrituras por MCP a sistemas externos,
+  deploys, operaciones destructivas sobre datos reales — nada menor). Todo derivado de
+  `HARNESS-INSTALL.md`.
+- [ ] **Trabajo hands-off (opcional, recomendado si el plan lo permite):** dejá una línea en
+  `docs/workflow.md` indicando que el usuario puede pasar al modo **`auto`** (corre sin preguntar; un
+  clasificador de seguridad bloquea lo riesgoso —push a main, deploy a prod, secretos, borrar archivos
+  preexistentes—). **`deny`/`ask` siguen aplicando en todos los modos**, así que los frenos críticos no
+  se pierden. (Requiere Opus 4.6+/Sonnet 4.6 y Max/Team+; es research preview. `bypassPermissions` NO se
+  recomienda fuera de una VM aislada.)
+- [ ] Modelo por defecto del proyecto = **Sonnet** (rinde y casi no topa el límite); el arnés ya escala
+  a Opus por subagente donde se piensa (leader, spec_author). Si la Etapa 0 detectó un MCP server o
+  plugin **realmente necesario**, declaralo acá también (la autenticación la hace el humano en cada
+  máquina).
 
 ### `.claude/commands/` 🔒 — modelo de trabajo diario (comandos `/`)
 Cada archivo `.claude/commands/<nombre>.md` es un prompt reutilizable que se invoca con `/<nombre>` y
