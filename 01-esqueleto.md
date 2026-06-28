@@ -22,6 +22,16 @@ Crear **todos los archivos estándar del arnés**. **NO migres ni quites nada de
 es la Etapa 2). El contenido 🔎 sale de `HARNESS-INSTALL.md`; la estructura 🔒 es idéntica en todo
 proyecto. Creá exactamente esta lista y marcá cada uno al terminar.
 
+**Regla de colisión (preservación) 🔒.** Si un archivo del estándar va a crearse en una ruta donde **ya
+existe** uno (las "colisiones" que marcó la Etapa 0 — p. ej. `CLAUDE.md`, `.claude/settings.json` o algo
+en `docs/` previos), **copiá el original a `archive/legacy/` ANTES de sobrescribirlo**. La Etapa 1 no
+migra contenido (eso es Etapa 2); solo hace esta **copia defensiva**, porque es la única ventana para no
+perderlo: una vez sobrescrito, ya no estaría para que la Etapa 2 lo archive.
+
+**(Opcional) Decisiones de estructura no obvias.** Cuando informes una (p. ej. por qué un hook recompila
+en vez de lintear), dejá el porqué en un **comentario del propio archivo** o una línea en
+`docs/architecture.md`, no solo en el chat — para que sobreviva como el resto del estado.
+
 ### Raíz
 - [ ] `CLAUDE.md` — fuerza el rol **`leader`**: el modelo siempre orquesta y **nunca edita código de
   la app ni tests** directamente; para tareas de código lanza el subagente apropiado; **nunca marca
@@ -43,7 +53,9 @@ proyecto. Creá exactamente esta lista y marcá cada uno al terminar.
   (toda feature `sdd` no-`pending` con sus 3 specs, requirements EARS, tasks `[x]`, cada `R<n>` con
   test), y un ítem de **constitución** (existe y el cambio no viola principios). Sin nada atado a un
   lenguaje.
-- [ ] `init.ps1` 🔒 *forma* / 🔎 *comandos* — PowerShell, con bloque de configuración arriba
+- [ ] `init.ps1` 🔒 *forma* / 🔎 *comandos* — PowerShell. **Fijá UTF-8 en la primera línea**
+  (`[Console]::OutputEncoding = [Text.Encoding]::UTF8`) para evitar mojibake en español. Después, un
+  bloque de configuración arriba
   (`$TestCmd`, `$LintCmd`, `$TypecheckCmd`, `$BuildCmd` desde `HARNESS-INSTALL.md`). En orden
   **fail-fast** (lo barato primero, corta al primer fallo) con `[OK]`/`[WARN]`/`[FAIL]` y exit code:
   (1) toolchain disponible; (2) archivos base del arnés existen; (3) invariantes del tablero
@@ -85,8 +97,10 @@ proyecto. Creá exactamente esta lista y marcá cada uno al terminar.
   completa; (2) la spec es el contrato — sin spec aprobado por humano no hay código de feature `sdd`;
   (3) una feature a la vez, estado en archivos; (4) ante fallo de herramienta el agente NO improvisa
   workarounds: para, marca `blocked`, documenta. **Sección del proyecto** 🔎: 3–6 principios propios
-  del stack/dominio (calidad, testing, seguridad/datos sensibles, compatibilidad, accesibilidad,
-  rendimiento). **Regla de enmienda**: cambiarla requiere acción humana + bump semver; el agente nunca
+  del stack/dominio (calidad, testing, seguridad/datos sensibles, **operaciones destructivas/
+  irreversibles sobre sistemas o datos reales** —p. ej. nada de borrados/migraciones en bases reales sin
+  aprobación humana—, compatibilidad, accesibilidad, rendimiento). **Regla de enmienda**: cambiarla
+  requiere acción humana + bump semver; el agente nunca
   la enmienda solo. *(Para la sección del proyecto, presentame el borrador y esperá mi visto bueno —
   es contrato.)*
 - [ ] `docs/workflow.md` 🔒 — el **modelo de trabajo diario** que el agente sigue: el principio
@@ -126,7 +140,8 @@ lenguaje. **Ruteo de modelo:** Opus en leader y spec_author; Sonnet en implement
 - [ ] Hooks que el arnés ejecuta (no el agente): `PostToolUse` matcher `Edit|Write` que corre lo
   **barato** (`Typecheck` o `Lint`, **no** la suite completa) y muestra solo el resumen; `Stop` que
   corre `init.ps1` antes de cerrar y, si tu Claude Code lo soporta, **bloquea el cierre (exit ≠ 0)** en
-  rojo. `permissions.allow` con los comandos del proyecto.
+  rojo. Los scripts de hook en PowerShell también **fijan UTF-8 arriba** (evita mojibake).
+  `permissions.allow` con los comandos del proyecto.
 
 ### `.claude/commands/` 🔒 — modelo de trabajo diario (comandos `/`)
 Cada archivo `.claude/commands/<nombre>.md` es un prompt reutilizable que se invoca con `/<nombre>` y

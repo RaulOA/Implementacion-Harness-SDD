@@ -51,6 +51,10 @@ que no se parezcan a ningún patrón conocido.
 Para cada cosa encontrada: **reutilizable** (qué archivo del arnés estándar la absorberá) o
 **histórico** (se preserva verbatim en `archive/legacy/`, no se reutiliza pero no se pierde).
 
+Además, marcá aparte las **colisiones**: archivos que ya existen **en rutas que el estándar va a crear o
+sobrescribir** (p. ej. un `CLAUDE.md`, `.claude/settings.json`, `AGENTS.md` o algo en `docs/` previos).
+La Etapa 1 los va a reemplazar, así que hay que preservarlos antes; anotalos como tales en el traspaso.
+
 ### 4 — Escribir el traspaso
 Creá `HARNESS-INSTALL.md` en la raíz con: stack + los 5 comandos + rutas de código/tests; el inventario
 con su clasificación y mapeo propuesto. Dejá una sección "Progreso de etapas" con casillas:
