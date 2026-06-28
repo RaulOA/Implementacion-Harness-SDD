@@ -22,6 +22,11 @@ seas fuerte exactamente en esos momentos. Hacerlos bien es, literalmente, dejar 
 Spoiler de cuáles son: **pedir bien, revisar el spec antes de que se escriba código, elegir el peso
 correcto de cada tarea, y exigir evidencia.** Todo lo demás el arnés ya lo sostiene solo.
 
+Y para que de verdad puedas **dejarlo trabajar**: en Claude Code conviene correr en modo **hands-off**
+(`auto` — Shift+Tab hasta que aparezca), donde el agente avanza sin pedirte permiso a cada paso y solo
+se frena en lo de **impacto real** (borrar datos reales, un deploy, mandar algo a un sistema externo).
+Así tu atención queda libre para esos cuatro momentos, en vez de gastarse aprobando minucias.
+
 ---
 
 ## 1. La idea de fondo: capturar ≠ ejecutar

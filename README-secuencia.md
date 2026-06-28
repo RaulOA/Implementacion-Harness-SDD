@@ -45,6 +45,10 @@ retención, y un set de **comandos `/`** en `.claude/commands/` que son tu rutin
 `/retomar`, `/idea`, `/nueva`, `/arreglar`, `/planificar`, `/cerrar`, `/estado`. Para aprender a usarlos
 y sacarle el máximo al arnés sin ser el eslabón débil, leé **`guia-del-arnes.md`**.
 
+Además deja fija, derivada de la investigación, la **configuración del chat** (permisos y modelo) que
+viaja con git; y podés correr en modo **hands-off** (`auto`) para que el agente avance solo y solo te
+frene en lo de impacto real.
+
 ## Principio rector (vale para todas)
 
 **Entrada variable, salida estándar.** El agente investiga ESTE proyecto y luego moldea el **mismo
@@ -59,4 +63,5 @@ En cualquier computadora: `git pull` y listo. El arnés viaja completo, con su m
 ## Decisiones por defecto (volteables — decíselo al agente)
 
 `init.ps1` como único script estándar (PowerShell, porque tu stack es .NET/Windows); **podar**
-features `done` del tablero a `progress/history.md`; **constitución incluida**.
+features `done` del tablero a `progress/history.md`; **constitución incluida**; permisos en modo **que
+fluye, frenando solo lo crítico** (`acceptEdits` de base, o `auto` para hands-off).

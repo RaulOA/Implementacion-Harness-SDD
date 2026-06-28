@@ -77,7 +77,9 @@ proyectos y en todas tus máquinas.
 3. Cuando termine, leé **`guia-del-arnes.md`** para aprender a trabajar con el arnés en el día a día.
 
 Como todo queda en **archivos del repositorio**, al abrir el proyecto en otra computadora basta con
-`git pull`: el arnés viaja completo, con su memoria, sin nada que instalar ni configurar.
+`git pull`: el arnés viaja completo, con su memoria, sin nada que instalar ni configurar. La
+investigación inicial también deja fija la **configuración del chat** (permisos, modelo), y el agente
+puede correr **hands-off**: avanza solo y solo te frena en lo de impacto real.
 
 ---
 
